@@ -3,7 +3,7 @@
  */
 package cn.myapp.config;
 
-import cn.myapp.controller.LoginController;
+import cn.myapp.controller.UserController;
 import cn.myapp.model.User;
 
 import com.jfinal.config.Constants;
@@ -35,9 +35,9 @@ public class MyAppConfig extends JFinalConfig {
 	 */
 	@Override
 	public void configRoute(Routes me) {		
-		me.add("/login", LoginController.class);
+		me.add("/user", UserController.class);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.jfinal.config.JFinalConfig#configPlugin(com.jfinal.config.Plugins)
 	 */
@@ -51,7 +51,7 @@ public class MyAppConfig extends JFinalConfig {
 		me.add(arp) ;
 		arp.addMapping("user", User.class) ;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.jfinal.config.JFinalConfig#configInterceptor(com.jfinal.config.Interceptors)
 	 */
@@ -59,7 +59,7 @@ public class MyAppConfig extends JFinalConfig {
 	public void configInterceptor(Interceptors me) {
 		
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.jfinal.config.JFinalConfig#configHandler(com.jfinal.config.Handlers)
 	 */
@@ -67,5 +67,5 @@ public class MyAppConfig extends JFinalConfig {
 	public void configHandler(Handlers me) {
 
 	}
-
+	
 }
