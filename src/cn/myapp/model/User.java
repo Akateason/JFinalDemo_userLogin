@@ -6,20 +6,12 @@ import com.jfinal.plugin.activerecord.Record;
 
 public class User extends Model<User> {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public enum KindOfJob{  
-	    subaojiang ,
-	    xiaoxuzi
-	}  
+	private static final long serialVersionUID = 1L ;
 		
 	/**
 	 * String	 userName ;
 	 * String	 password ;
-	 * int 		 kindOfJob ; // 1.subaojiang. 2.xiaoxuzi
+	 * int 		 kindOfJob ; // -1admin 1.subaojiang. 2.xiaoxuzi
 	 */	  	
 	private Integer		userID ;
 	private String 		userName ;

@@ -3,6 +3,7 @@
  */
 package cn.myapp.config;
 
+import cn.myapp.controller.DataNoteController;
 import cn.myapp.controller.UserController;
 import cn.myapp.model.User;
 
@@ -16,7 +17,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 
 /**
- * @author cwl
+ * @author teason
  *
  */
 public class MyAppConfig extends JFinalConfig {
@@ -36,6 +37,7 @@ public class MyAppConfig extends JFinalConfig {
 	@Override
 	public void configRoute(Routes me) {		
 		me.add("/user", UserController.class);
+		me.add("/note", DataNoteController.class);
 	}
 	
 	/* (non-Javadoc)
