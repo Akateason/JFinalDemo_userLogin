@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 
 import xtc.http.HttpRequest;
 import xtc.json.JsonToMap;
+import xtc.model.gsdata.Article;
 import xtc.model.gsdata.Nickname;
 
 public class FetchGsdata {
@@ -22,7 +23,7 @@ public class FetchGsdata {
 	
 	/**
 	 * 前天 速报 详细
-	 * @return
+	 * fetchSubaoNickname
 	 */
 	public Nickname fetchSubaoNickname() {
 		// REQUEST .
@@ -38,6 +39,7 @@ public class FetchGsdata {
 		return nickname ;
 	}
 	
+	
 	public String fetchDateString(Nickname nickname) throws ParseException {
 		String dateOrigin = nickname.getResult_day() ;
 		SimpleDateFormat oldFormat = new SimpleDateFormat( "yyyyMMdd" );
@@ -49,6 +51,7 @@ public class FetchGsdata {
 	private final static String kResultDay = "wx/wxapi/result_day" ;
 	/**
 	 * 前日 排名
+	 * fetch Sort From Two Days Ago
 	 * @param String dateString . yyyy-MM-dd
 	 */
 	public String fetchSortFromTwoDaysAgo(String dateString) {
@@ -57,10 +60,10 @@ public class FetchGsdata {
 		
 		// SETUP .
 		String spaceName = "spaceName=" + kResultDay ;
-		String jsonStr = "&jsonStr=" 
-						+ "{\"order\":\"desc\",\"day\":\"" 
-						+ dateString
-						+ "\",\"groupid\":\"38504\",\"sort\":\"wci\"}" ;
+		String jsonStr   = "&jsonStr=" 
+							+ "{\"order\":\"desc\",\"day\":\"" 
+							+ dateString
+							+ "\",\"groupid\":\"38504\",\"sort\":\"wci\"}" ;
 		// REQUEST .
 		String resultStr = HttpRequest.sendGet(kUrlGsdataApi, spaceName + jsonStr) ;
 		// PARSE .
@@ -95,6 +98,45 @@ public class FetchGsdata {
 		returnString += subaoSortInfo + "\n\n" ;
 		
 		return returnString ;
+	}
+	
+	/*
+	 * 某天所有文章 .
+	 * get articles In Date
+	 * @param dayStr yyyy-MM-dd
+	 */	
+	private final static String kContentList = "wx/opensearchapi/content_list" ;
+	
+	public String articlesInDate(String dayStr) {
+		
+		String spaceName = "spaceName=" + kContentList ;
+		String jsonStr   = "&jsonStr=" 
+							+ "{\"wx_name\":\"zhepen\",\"postdate\":\""
+							+ dayStr
+							+ "\",\"sortname\":\"readnum\",\"sort\":\"desc\"}" ;
+		// REQUEST .
+		String response = HttpRequest.sendGet(kUrlGsdataApi, spaceName + jsonStr) ;
+		// PARSE .
+		JsonObject resultMap = JsonToMap.parseJson(response) ;		
+		JsonObject resultData = resultMap.get("returnData").getAsJsonObject() ;
+		JsonArray rowsList = resultData.get("items").getAsJsonArray() ;
+		Gson gson = new Gson() ;
+		ArrayList<Article> articles = new ArrayList<Article>() ; 
+		for (JsonElement jsonElement : rowsList) {			
+			Article article= gson.fromJson(jsonElement, Article.class) ;
+			articles.add(article) ;
+		}
+		// RESULT STR .
+		String resultStr = "【前日文章】\n" ;
+
+		for (Article article : articles) 
+		{
+			resultStr += "[top" + article.getTop() + "]\t" + article.getTitle() 
+						 + "\nPV:" + article.getReadnum() + "\t\t"
+						 + "赞:" + article.getLikenum() + "\n" ;						 								
+		}
+		
+		return resultStr + "\n" ;
 	}
 	
 }

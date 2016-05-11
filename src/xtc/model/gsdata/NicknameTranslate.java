@@ -8,8 +8,8 @@ public class NicknameTranslate {
 	private static Map<String, String> getChineseNameDictionary() 
 	{
     	Map<String, String> map = new HashMap<String,String>() ; 
-    	map.put("wx_name", "公众号英文") ;
-    	map.put("wx_nickname", "公众号") ;
+//    	map.put("wx_name", "公众号英文") ;
+//    	map.put("wx_nickname", "公众号") ;
     	map.put("wx_title", "最新文章地址") ;
     	map.put("wx_url_posttime", "最新文章发布时间") ;    	
     	map.put("url_num", "文章数") ;

@@ -27,12 +27,12 @@ public class Nickname {
 	private String    	  wci_up ;               // 微信传播指数 增量
 	private String		  rowno ;             // 排名
 	private String		  rowno_up ;          // 排名上升增量
-	private String   	  result_day ;       // 排名日期
+	private String   	  result_day ;        // 排名日期
 	private String		  url_times ;         // 该公众号在上述日期中发文次数
 	private String		  url_times_up ;      // 发文次数相对上次的增量（负数即为下降）
 	private String		  url_times_readnum ; // 该公众号在上述日期中发文的总阅读数
 	private String		  url_times_readnum_up ; // 发文的总阅读数相对上次的增量（负数即为下降）
-	private String		  url_num_up ;        // 文章总数相对上次的增量（负数即为下降）	
+	private String		  url_num_up ;        // 文章总数相对上次的增量（负数即为下降）		
 	
 	
 	public String getWx_name() {

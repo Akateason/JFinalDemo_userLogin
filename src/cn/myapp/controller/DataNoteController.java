@@ -28,12 +28,13 @@ public class DataNoteController extends Controller {
 		
 		// GET SORT INFO
 		String dayString = fetcher.fetchDateString(nickname) ;
+		String articlesInday = fetcher.articlesInDate(dayString) ;
 		String sortInfo = fetcher.fetchSortFromTwoDaysAgo(dayString) ;
-		String emailContentStr = sortInfo + subaoDetailInfo ; // fetch detail .
+		String emailContentStr = articlesInday + sortInfo + subaoDetailInfo ; // fetch detail .
 		
 		if (emailContentStr != null) {					
 			// EMIAL TITLE .
-			String sEmailTitle = "【通知】" + nickname.getResult_day() + "数据分析" ;		
+			String sEmailTitle = "【通知】" + nickname.getResult_day() + "数据分析" ;					
 			
 			HashMap<String, Object> map = new HashMap<String, Object>() ;
 			map.put("title", sEmailTitle) ;
