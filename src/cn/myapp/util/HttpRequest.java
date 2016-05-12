@@ -6,10 +6,25 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+
+
 public class HttpRequest {
+	
+	/**
+	 * Type Of Request
+	 * @author teason
+	 */
+	public enum TypeOfRequest {
+		GetType ,
+		PostType
+	}
+	
     /**
      * 向指定URL发送GET方法的请求
      * 
@@ -122,4 +137,47 @@ public class HttpRequest {
         }
         return result;
     }    
+    
+   
+    /**
+     * let Map To String
+     * @param map
+     * @return
+     */
+    private static String letMapToString(HashMap<String, Object> map) {
+		String paramString = "" ;
+		for (String key : map.keySet()) {			
+			String value = (String) map.get(key);
+			paramString += "&" + key + "=" + value ;
+		}
+		return paramString ;
+	}
+    
+    /**
+     * send Request
+     * @param type 		TypeOfRequest
+     * @param url		String
+     * @param map		HashMap
+     * @return response .
+     */
+    public static String sendRequest(TypeOfRequest type,String url,HashMap<String, Object> map) {
+    	
+    	String param = letMapToString(map) ;
+
+    	switch (type) {
+		case GetType :
+		{
+	    	return sendGet(url, param) ;
+		}
+		case PostType :
+		{
+			return sendPost(url, param) ;
+		}
+		default :
+			break ;
+		}
+    	
+    	return null ;
+	}
+    
 }

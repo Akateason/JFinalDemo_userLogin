@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -13,6 +14,7 @@ import com.google.gson.JsonObject;
 import cn.myapp.module.gsdata.mailInfo.model.Article;
 import cn.myapp.module.gsdata.mailInfo.model.Nickname;
 import cn.myapp.util.HttpRequest;
+import cn.myapp.util.HttpRequest.TypeOfRequest;
 import cn.myapp.util.JsonToMap;
 
 public class FetchGsdata {
@@ -39,7 +41,12 @@ public class FetchGsdata {
 		return nickname ;
 	}
 	
-	
+	/**
+	 * fetch DateString
+	 * @param nickname
+	 * @return
+	 * @throws ParseException
+	 */
 	public String fetchDateString(Nickname nickname) throws ParseException {
 		String dateOrigin = nickname.getResult_day() ;
 		SimpleDateFormat oldFormat = new SimpleDateFormat( "yyyyMMdd" );
@@ -59,18 +66,26 @@ public class FetchGsdata {
 		String returnString = "【前日竞品排名】\n\n" ;	
 		
 		// SETUP .
-		String spaceName = "spaceName=" + kResultDay ;
-		String jsonStr   = "&jsonStr=" 
-							+ "{\"order\":\"desc\",\"day\":\"" 
-							+ dateString
-							+ "\",\"groupid\":\"38504\",\"sort\":\"wci\"}" ;
+		Gson gson = new Gson() ;
+		HashMap<String, Object> jsonMap = new HashMap<String, Object>() ;
+		jsonMap.put("order", "desc");
+		jsonMap.put("day", dateString) ;
+		jsonMap.put("groupid", "38504") ;
+		jsonMap.put("sort", "wci") ;
+		String jsonStr = gson.toJson(jsonMap) ;
+		
+		HashMap<String, Object> map = new HashMap<String, Object>() ;		
+		map.put("spaceName", kResultDay) ;
+		map.put("jsonStr", jsonStr) ;
+
+
 		// REQUEST .
-		String resultStr = HttpRequest.sendGet(kUrlGsdataApi, spaceName + jsonStr) ;
+		String resultStr = HttpRequest.sendRequest(TypeOfRequest.GetType, kUrlGsdataApi, map) ;
 		// PARSE .
 		JsonObject resultMap = JsonToMap.parseJson(resultStr) ;		
 		JsonObject resultData = resultMap.get("returnData").getAsJsonObject() ;
 		JsonArray rowsList = resultData.get("rows").getAsJsonArray() ;
-		Gson gson = new Gson() ;
+
 		ArrayList<Nickname> nicknames = new ArrayList<Nickname>() ; 
 		for (JsonElement jsonElement : rowsList) {
 			Nickname nick = gson.fromJson(jsonElement, Nickname.class) ;
