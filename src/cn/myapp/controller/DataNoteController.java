@@ -6,10 +6,10 @@ import java.util.HashMap;
 import com.jfinal.core.Controller;
 
 import cn.myapp.model.ResultObj;
-import xtc.data.fetch.FetchGsdata;
-import xtc.http.HttpRequest;
-import xtc.info.display.EmailContentDisplay;
-import xtc.model.gsdata.Nickname;
+import cn.myapp.module.gsdata.mailInfo.EmailContentDisplay;
+import cn.myapp.module.gsdata.mailInfo.FetchGsdata;
+import cn.myapp.module.gsdata.model.Nickname;
+import cn.myapp.util.HttpRequest;
 
 public class DataNoteController extends Controller {
 	
