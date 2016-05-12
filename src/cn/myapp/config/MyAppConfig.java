@@ -4,6 +4,7 @@
 package cn.myapp.config;
 
 import cn.myapp.controller.DataNoteController;
+import cn.myapp.controller.ScoreController;
 import cn.myapp.controller.UserController;
 import cn.myapp.model.User;
 
@@ -36,8 +37,9 @@ public class MyAppConfig extends JFinalConfig {
 	 */
 	@Override
 	public void configRoute(Routes me) {		
-		me.add("/user", UserController.class);
-		me.add("/note", DataNoteController.class);
+		me.add("/user", UserController.class) ;
+		me.add("/note", DataNoteController.class) ;
+		me.add("/score",ScoreController.class) ;
 	}
 	
 	/* (non-Javadoc)

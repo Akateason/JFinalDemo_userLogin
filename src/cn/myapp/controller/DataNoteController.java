@@ -7,6 +7,7 @@ import com.jfinal.core.Controller;
 
 import cn.myapp.model.ResultObj;
 import xtc.data.fetch.FetchGsdata;
+import xtc.http.HttpRequest;
 import xtc.info.display.EmailContentDisplay;
 import xtc.model.gsdata.Nickname;
 
@@ -42,8 +43,19 @@ public class DataNoteController extends Controller {
 			
 			ResultObj resultObj = new ResultObj(map) ;
 			renderJson(resultObj) ;				
-		}		
-				
+		}					
+	}
+	
+	/**
+	 * 钉钉 链接测试 .
+	 */
+	private final static String kCorpID		 = "dingef5b18dc7fedfada" ;
+	private final static String kCorpSecret	 = "0hUGyiRHz8WHTpsPG72jV6MM26rQzGVAi31E4IUcEIi6NRXBdh52ZZ_i0wqeHcSU" ;
+	
+	public void test() {
+		String response = HttpRequest.sendGet("https://oapi.dingtalk.com/gettoken", 
+				"corpid="+kCorpID+"&corpsecret="+kCorpSecret) ;
+		renderJson(response) ;
 	}
 	
 }
