@@ -1,4 +1,4 @@
-package cn.myapp.module.gsdata.model;
+package cn.myapp.module.gsdata.mailInfo.model;
 
 import java.util.HashMap;
 import java.util.Map;

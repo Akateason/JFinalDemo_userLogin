@@ -1,7 +1,7 @@
 package cn.myapp.module.gsdata.mailInfo;
 
-import cn.myapp.module.gsdata.model.Nickname;
-import cn.myapp.module.gsdata.model.NicknameTranslate;
+import cn.myapp.module.gsdata.mailInfo.model.Nickname;
+import cn.myapp.module.gsdata.mailInfo.model.NicknameTranslate;
 import cn.myapp.util.UtilSplit;
 
 

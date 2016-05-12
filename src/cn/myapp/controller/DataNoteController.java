@@ -8,7 +8,7 @@ import com.jfinal.core.Controller;
 import cn.myapp.model.ResultObj;
 import cn.myapp.module.gsdata.mailInfo.EmailContentDisplay;
 import cn.myapp.module.gsdata.mailInfo.FetchGsdata;
-import cn.myapp.module.gsdata.model.Nickname;
+import cn.myapp.module.gsdata.mailInfo.model.Nickname;
 import cn.myapp.util.HttpRequest;
 
 public class DataNoteController extends Controller {

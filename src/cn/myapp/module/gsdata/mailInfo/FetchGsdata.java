@@ -10,8 +10,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import cn.myapp.module.gsdata.model.Article;
-import cn.myapp.module.gsdata.model.Nickname;
+import cn.myapp.module.gsdata.mailInfo.model.Article;
+import cn.myapp.module.gsdata.mailInfo.model.Nickname;
 import cn.myapp.util.HttpRequest;
 import cn.myapp.util.JsonToMap;
 
