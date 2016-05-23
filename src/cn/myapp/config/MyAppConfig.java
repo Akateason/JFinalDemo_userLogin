@@ -5,6 +5,7 @@ package cn.myapp.config;
 
 import cn.myapp.controller.DataNoteController;
 import cn.myapp.controller.LanguageAnalysisCtrller;
+import cn.myapp.controller.TitleController;
 import cn.myapp.controller.UserController;
 import cn.myapp.model.User;
 
@@ -43,6 +44,7 @@ public class MyAppConfig extends JFinalConfig {
 		me.add("/user", UserController.class) ;
 		me.add("/note", DataNoteController.class) ;
 		me.add("/language",LanguageAnalysisCtrller.class) ;
+		me.add("/title",TitleController.class) ;
 	}
 	
 	/* (non-Javadoc)

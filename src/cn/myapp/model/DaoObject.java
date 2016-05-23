@@ -1,29 +1,24 @@
 package cn.myapp.model;
 
-
-
 import java.lang.reflect.Field;
 import java.util.Date;
-
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
-
 import cn.myapp.util.reflection.UtilReflect;
 
 /**
  * DaoObject [dao操作基类] 
- * 封装insert方法 . 
- * 提取数据 和 查询 需在子类重写 .
+ * 查询 需在子类重写 .
  * @author teason
  *
  */
 public class DaoObject extends Model<DaoObject> {
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
-	 * dao Insert
+	 * dao Insert 
 	 * @param tableName
 	 * @param primaryKey
 	 * @author teason
@@ -41,6 +36,11 @@ public class DaoObject extends Model<DaoObject> {
 		Db.save(tableName,primaryKey,record) ;
 	}	
 	
+	/**
+	 * dao fetch obj From Record . 
+	 * @param record
+	 * @return object .
+	 */
 	public DaoObject fetchFromRecord(Record record) {
 				
 		UtilReflect utilSplit = new UtilReflect() ;

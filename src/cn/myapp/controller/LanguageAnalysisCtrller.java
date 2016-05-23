@@ -1,20 +1,27 @@
 package cn.myapp.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.http.protocol.HTTP;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import cn.myapp.model.ResultObj;
 import cn.myapp.module.titleScore.model.Title;
+import cn.myapp.module.titleScore.model.TitleAnalyze;
 import cn.myapp.util.HttpRequest;
+import cn.myapp.util.HttpRequest.TypeOfRequest;
+import cn.myapp.util.json.GsonUtils;
+import cn.myapp.util.json.JsonToMap;
 
 /**************************************
  * [语义分析] BosonNLP HTTP API
@@ -25,6 +32,7 @@ import cn.myapp.util.HttpRequest;
 ***************************************/
 
 public class LanguageAnalysisCtrller extends Controller {
+	
 	private final static String kBosonAPI_token		 	= "I5yHDctw.6474.tuiZDNyxwvqn" ;	
 	private final static String kURL_EmotionAnalysis 	= "http://api.bosonnlp.com/sentiment/analysis" ;	
 	private final static String kURL_KeywordsAnalysis 	= "http://api.bosonnlp.com/keywords/analysis" ;
@@ -40,6 +48,10 @@ public class LanguageAnalysisCtrller extends Controller {
 		return myHeader;
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	//	BosonNLP HTTP API
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * 情感分析
 	 * @param 	String 	title 单个字符串,或数组的jsonSTRING格式.
@@ -53,6 +65,7 @@ public class LanguageAnalysisCtrller extends Controller {
 		String title = getPara("title") ;		
 		String response = HttpRequest.doPost(kURL_EmotionAnalysis, getMyHeader(), null, title) ;
 		System.out.println(response) ;
+//		ResultObj resultObj = new ResultObj(response) ;
 		renderJson(response) ;
 	}
 	
@@ -67,6 +80,7 @@ public class LanguageAnalysisCtrller extends Controller {
 		String title = getPara("title") ;
 		String response = HttpRequest.doPost(kURL_KeywordsAnalysis, getMyHeader(), null, title) ;
 		System.out.println(response) ;
+//		ResultObj resultObj = new ResultObj(response) ;
 		renderJson(response) ;
 	}
 	
@@ -83,6 +97,7 @@ public class LanguageAnalysisCtrller extends Controller {
 		String title = getPara("title") ;
 		String response = HttpRequest.doPost(kURL_ClassifyAnalysis, getMyHeader(), null, title) ;
 		System.out.println(response) ;
+//		ResultObj resultObj = new ResultObj(response) ;
 		renderJson(response) ;		
 	}
 	
@@ -97,34 +112,129 @@ public class LanguageAnalysisCtrller extends Controller {
 		String keyword = getPara("keyword") ;
 		String response = HttpRequest.doPost(kURL_SuggestAnalysis, getMyHeader(), null, keyword) ;
 		System.out.println(response) ;
+//		ResultObj resultObj = new ResultObj(response) ;
 		renderJson(response);
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	//	sbj api . make complete analyze for title .
+	//////////////////////////////////////////////////////////////////////////////////////////	
 	
-	public void testInsert() {
-		Title title = new Title() ;
+	private final static String kURL_titleInsert = "http://localhost:8080/GsdataApp/title/insert" ;
+	
+	public void analyze() throws JsonParseException, JsonMappingException, IOException {
 		
-		title.setContent("newnewnew" + (int)(1 + Math.random() * (1000 - 1 + 1)) ) ;
-		title.daoInsert("title", "titleID") ;
-		renderJson("success") ;
+		String title = getPara("title") ;		
+		//1. request to titleCtrller/title/insert 		 
+		int titleID = titleIDFromDB(title) ;
+		
+		//2. SELECT titleID from analyzeTB .
+		// analyze obj exist or not .
+		TitleAnalyze analyze = new TitleAnalyze() ;
+		analyze = analyze.selectAnalyzeByTitleID(titleID) ;
+		// if not exist . go request for analyze and insert analyzeTB .
+		if (analyze == null) {
+			analyze = getAnalyzeWithRequest(title) ;
+		}
+		// if exist . return analyze .
+		else {
+			
+		}
+		
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////
+	//	private .
+	//////////////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * request to titleCtrller/title/insert
+	 * select title from db, if not exist , insert one .
+	 * @param title
+	 * @return
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
+	private int titleIDFromDB(String title) throws JsonParseException, JsonMappingException, IOException {
+		HashMap<String, Object> mapReq = new HashMap<String, Object>() ;
+		mapReq.put("title", title) ;	
+		String response = HttpRequest.sendRequest(TypeOfRequest.GetType, kURL_titleInsert, mapReq) ; 		
+		ObjectMapper mapper = new ObjectMapper() ;
+		ResultObj resultObj = mapper.readValue(response, ResultObj.class) ;
+		
+		//GET titleID
+		Map<String, Object> data = getReturnDataIntoMap(resultObj);					
+		int titleID = ((Integer) data.get("titleID")).intValue() ;
+		System.out.println("the titleid is : " + titleID) ;
+		return titleID ;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> getReturnDataIntoMap(ResultObj resultObj) {
+		return ((Map<String, Object>)(resultObj.getReturnData()));
+	}
+		
+	private List<Object> getReturnDataListWithStr(String dataStr) throws JsonParseException, JsonMappingException, IOException {
+	    ObjectMapper mapper = new ObjectMapper();
+	    JavaType javaType = mapper.getTypeFactory().constructParametricType(List.class, Object.class);	   
+	    return mapper.readValue(dataStr, javaType);
+	}
+
 	
-	public void testSelect() {
-		java.util.List<Record> List = Db.find("SELECT * FROM nutzbook.title;") ;
-		ArrayList<String> titleList = new ArrayList<String>() ;
-		for (Record record : List) {
-			if (record != null) {
-				Title title = new Title() ;
-				title.fetchFromRecord(record) ;
-				
-				Gson gson = new Gson() ;
-				String jsonString = gson.toJson(title) ;		 
-				System.out.println(jsonString) ;
-				titleList.add(jsonString) ;
-			}
-		}	
-		renderJson(titleList) ;
+	private final static String kURL_EmotionAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/sentiment" ;	
+	private final static String kURL_KeywordsAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/keywords" ;
+	private final static String kURL_ClassifyAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/classify" ;
+	private final static String kURL_SuggestAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/suggest" ;
+	
+	private TitleAnalyze getAnalyzeWithRequest(String titleStr) throws JsonParseException, JsonMappingException, IOException {
+		
+		titleStr = "\"" + titleStr + "\"" ;				
+		
+		TitleAnalyze analyze = new TitleAnalyze() ;		
+		//1. sentiment 
+		HashMap<String, Object> mapReq = new HashMap<String, Object>() ;
+		mapReq.put("title", titleStr) ;	
+		String response_sentiment = HttpRequest.sendRequest(TypeOfRequest.GetType, kURL_EmotionAnalysis_wei, mapReq) ;
+		System.out.println(response_sentiment) ;
+		List<Object> listEmotion = getReturnDataListWithStr(response_sentiment) ;
+		@SuppressWarnings("unchecked")
+		List<Double> emotionListDouble = (List<Double>) listEmotion.get(0) ;
+		if (emotionListDouble == null) return null ;
+		analyze.setEmotionPositive(emotionListDouble.get(0));
+		analyze.setEmotionNegative(emotionListDouble.get(1));
+		
+		//2. keywords
+		String response_keywords = HttpRequest.sendRequest(TypeOfRequest.GetType, kURL_KeywordsAnalysis_wei, mapReq) ;
+		List<Object> listKeywords = getReturnDataListWithStr(response_keywords) ;
+		if (listKeywords == null) return null ;
+		@SuppressWarnings("unchecked")
+		List<Object> keywordList = (List<Object>) listKeywords.get(0) ;
+		String mainKeyword = (String) keywordList.get(1) ;
+		analyze.setMainKeyword(mainKeyword);
+		analyze.setKeywordList(response_keywords);
+		
+		//3. classify
+		String response_classify = HttpRequest.sendRequest(TypeOfRequest.GetType, kURL_ClassifyAnalysis_wei, mapReq) ;
+		List<Object> listClassify = getReturnDataListWithStr(response_classify) ;
+		if (listClassify == null) return null ;
+		int classify = ((Integer) listClassify.get(0)).intValue() ;
+		analyze.setClassify(classify) ; 
+		
+		//4. suggest
+		
+		
+		return analyze ;
 	}
 	
 	
 }
+
+
+
+
+
+
+
+
+

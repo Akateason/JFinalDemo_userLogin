@@ -1,4 +1,4 @@
-package cn.myapp.util;
+package cn.myapp.util.json;
 
 import java.util.ArrayList;
 import java.util.HashMap;

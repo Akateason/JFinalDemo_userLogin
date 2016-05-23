@@ -15,7 +15,7 @@ import cn.myapp.module.gsdata.mailInfo.model.Article;
 import cn.myapp.module.gsdata.mailInfo.model.Nickname;
 import cn.myapp.util.HttpRequest;
 import cn.myapp.util.HttpRequest.TypeOfRequest;
-import cn.myapp.util.JsonToMap;
+import cn.myapp.util.json.JsonToMap;
 
 public class FetchGsdata {
 

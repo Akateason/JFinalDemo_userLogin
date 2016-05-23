@@ -196,6 +196,7 @@ public class HttpRequest {
     public static String doPost(String url, HashMap<String, Object> mapHeader, HashMap<String, Object> fieldMap, String bodyStr) throws UnirestException, java.io.IOException {
     	
     	HttpRequestWithBody request = Unirest.post(url) ;
+    	
     	// header
     	if (mapHeader != null) {
     		for (String key : mapHeader.keySet()) {		

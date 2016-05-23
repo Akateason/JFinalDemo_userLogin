@@ -1,5 +1,9 @@
 package cn.myapp.module.titleScore.model;
 
+import java.util.Map;
+
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 import cn.myapp.model.DaoObject;
 
 /**
@@ -7,7 +11,7 @@ import cn.myapp.model.DaoObject;
  * @author teason .
  */
 public class Title extends DaoObject {
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	private int		 	titleID ;					// id
@@ -80,6 +84,32 @@ public class Title extends DaoObject {
 	}
 	public void setScore(int score) {
 		this.score = score;
+	}
+	
+	/**
+	 * CONSTRUCTOR .
+	 * @param contentStr
+	 */
+	public Title(String contentStr) {
+		// TODO Auto-generated constructor stub
+		this.content = contentStr ;
+	}
+	
+	public Title() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+	
+	/**	DAO SELECT
+	 *	select title by content .
+	 */
+	public Title selectTitleByContent(String content) {
+		Record record = Db.findById("title", "content", content) ;	
+		if (record != null) {
+			return (Title)fetchFromRecord(record) ;
+		}
+		return null ;
 	}
 	
 }
