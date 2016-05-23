@@ -6,6 +6,7 @@ package cn.myapp.config;
 import cn.myapp.controller.DataNoteController;
 import cn.myapp.controller.ScoreController;
 import cn.myapp.controller.UserController;
+import cn.myapp.controller.DingController;
 import cn.myapp.model.User;
 
 import com.jfinal.config.Constants;
@@ -40,6 +41,7 @@ public class MyAppConfig extends JFinalConfig {
 		me.add("/user", UserController.class) ;
 		me.add("/note", DataNoteController.class) ;
 		me.add("/score",ScoreController.class) ;
+		me.add("/ding",DingController.class) ;
 	}
 	
 	/* (non-Javadoc)
