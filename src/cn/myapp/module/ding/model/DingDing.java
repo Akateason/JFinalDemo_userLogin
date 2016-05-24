@@ -2,9 +2,7 @@ package cn.myapp.module.ding.model;
 
 import cn.myapp.util.HttpRequest;
 import cn.myapp.util.json.JsonToMap;
-
 import com.google.gson.JsonObject;
-import com.jfinal.core.Const;
 import com.jfinal.kit.PropKit;
 
 /**

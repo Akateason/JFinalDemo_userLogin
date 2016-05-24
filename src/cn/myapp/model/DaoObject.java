@@ -26,10 +26,17 @@ public class DaoObject extends Model<DaoObject> {
 	public void daoInsert(String tableName, String primaryKey) {
 		Record record = new Record() ;
 		UtilReflect utilSplit = new UtilReflect() ;
-		String[] fieldList = utilSplit.getFieldName(this) ;
-		for (String string : fieldList) {
-			if (string.contains("id") || string.contains("ID")) continue ;		
-			if (utilSplit.getFieldValueByName(string, this) == null) continue ;
+		Field[] fieldList = utilSplit.getFields(this) ;
+		for (Field field: fieldList) {
+			String string = field.getName() ;						
+			if (string.equals("serialVersionUID")) continue ;							
+			else if (field.getType() == int.class ) {
+				if (((Integer)(utilSplit.getFieldValueByName(string, this))).intValue() == 0) continue ;									
+			}
+			else if (field.getType() == long.class) {
+				if (((Long)(utilSplit.getFieldValueByName(string, this))).longValue() == 0) continue ;
+			}			
+			else if (utilSplit.getFieldValueByName(string, this) == null) continue ;			
 			
 			record.set(string, utilSplit.getFieldValueByName(string, this)) ;
 		}		
@@ -48,11 +55,17 @@ public class DaoObject extends Model<DaoObject> {
 		for (Field field: fieldList) {
 			String string = field.getName() ;			
 			
-			if (field.getType() == int.class) {			
-				utilSplit.setFieldNameValueByName(field, this, new Object[]{record.getInt(string)}) ;
+			if (string.equals("serialVersionUID")) {
+				continue ;
+			}
+			else if (field.getType() == int.class) {
+				utilSplit.setFieldNameValueByName(field, this, new Object[]{record.getNumber(string).intValue()}) ;
 			}
 			else if (field.getType() == String.class) {
 				utilSplit.setFieldNameValueByName(field, this, new Object[]{record.getStr(string)}) ;
+			}
+			else if (field.getType() == long.class) {
+				utilSplit.setFieldNameValueByName(field, this, new Object[]{record.getNumber(string).longValue()}) ;
 			}
 			else if (field.getType() == double.class) {
 				utilSplit.setFieldNameValueByName(field, this, new Object[]{record.getDouble(string)}) ;

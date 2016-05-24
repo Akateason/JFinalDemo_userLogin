@@ -2,26 +2,14 @@ package cn.myapp.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.protocol.HTTP;
-
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.jfinal.core.Controller;
 import com.mashape.unirest.http.exceptions.UnirestException;
-
 import cn.myapp.model.ResultObj;
-import cn.myapp.module.titleScore.model.Title;
-import cn.myapp.module.titleScore.model.TitleAnalyze;
+import cn.myapp.module.analyze.AnalyzeHandler;
 import cn.myapp.util.HttpRequest;
-import cn.myapp.util.HttpRequest.TypeOfRequest;
-import cn.myapp.util.json.GsonUtils;
-import cn.myapp.util.json.JsonToMap;
+
 
 /**************************************
  * [语义分析] BosonNLP HTTP API
@@ -38,15 +26,6 @@ public class LanguageAnalysisCtrller extends Controller {
 	private final static String kURL_KeywordsAnalysis 	= "http://api.bosonnlp.com/keywords/analysis" ;
 	private final static String kURL_ClassifyAnalysis 	= "http://api.bosonnlp.com/classify/analysis" ;
 	private final static String kURL_SuggestAnalysis 	= "http://api.bosonnlp.com/suggest/analysis" ;
-	
-	// Header in BosonNLP HTTP API
-	private static HashMap<String, Object> getMyHeader() {
-		HashMap<String, Object> myHeader = new HashMap<String, Object>() ;
-		myHeader.put("Content-Type", "application/json") ;
-		myHeader.put("Accept", "application/json") ;
-		myHeader.put("X-Token", kBosonAPI_token) ;		
-		return myHeader;
-	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	//	BosonNLP HTTP API
@@ -115,127 +94,35 @@ public class LanguageAnalysisCtrller extends Controller {
 //		ResultObj resultObj = new ResultObj(response) ;
 		renderJson(response);
 	}
-	
+		
 	//////////////////////////////////////////////////////////////////////////////////////////
 	//	sbj api . make complete analyze for title .
 	//////////////////////////////////////////////////////////////////////////////////////////	
-	
-	private final static String kURL_titleInsert = "http://localhost:8080/GsdataApp/title/insert" ;
-	
-	public void analyze() throws JsonParseException, JsonMappingException, IOException {
-		
-		String title = getPara("title") ;		
-		//1. request to titleCtrller/title/insert 		 
-		int titleID = titleIDFromDB(title) ;
-		
-		//2. SELECT titleID from analyzeTB .
-		// analyze obj exist or not .
-		TitleAnalyze analyze = new TitleAnalyze() ;
-		analyze = analyze.selectAnalyzeByTitleID(titleID) ;
-		// if not exist . go request for analyze and insert analyzeTB .
-		if (analyze == null) {
-			analyze = getAnalyzeWithRequest(title) ;
-		}
-		// if exist . return analyze .
-		else {
-			
-		}
-		
-	}
-
-	//////////////////////////////////////////////////////////////////////////////////////////
-	//	private .
-	//////////////////////////////////////////////////////////////////////////////////////////
-
 	/**
-	 * request to titleCtrller/title/insert
-	 * select title from db, if not exist , insert one .
-	 * @param title
-	 * @return
+	 * analyze a title .
+	 * @param	string	title
 	 * @throws JsonParseException
 	 * @throws JsonMappingException
 	 * @throws IOException
 	 */
-	private int titleIDFromDB(String title) throws JsonParseException, JsonMappingException, IOException {
-		HashMap<String, Object> mapReq = new HashMap<String, Object>() ;
-		mapReq.put("title", title) ;	
-		String response = HttpRequest.sendRequest(TypeOfRequest.GetType, kURL_titleInsert, mapReq) ; 		
-		ObjectMapper mapper = new ObjectMapper() ;
-		ResultObj resultObj = mapper.readValue(response, ResultObj.class) ;
+	public void analyze() throws JsonParseException, JsonMappingException, IOException {
 		
-		//GET titleID
-		Map<String, Object> data = getReturnDataIntoMap(resultObj);					
-		int titleID = ((Integer) data.get("titleID")).intValue() ;
-		System.out.println("the titleid is : " + titleID) ;
-		return titleID ;
-	}
-
-	@SuppressWarnings("unchecked")
-	private Map<String, Object> getReturnDataIntoMap(ResultObj resultObj) {
-		return ((Map<String, Object>)(resultObj.getReturnData()));
-	}
-		
-	private List<Object> getReturnDataListWithStr(String dataStr) throws JsonParseException, JsonMappingException, IOException {
-	    ObjectMapper mapper = new ObjectMapper();
-	    JavaType javaType = mapper.getTypeFactory().constructParametricType(List.class, Object.class);	   
-	    return mapper.readValue(dataStr, javaType);
-	}
-
-	
-	private final static String kURL_EmotionAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/sentiment" ;	
-	private final static String kURL_KeywordsAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/keywords" ;
-	private final static String kURL_ClassifyAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/classify" ;
-	private final static String kURL_SuggestAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/suggest" ;
-	
-	private TitleAnalyze getAnalyzeWithRequest(String titleStr) throws JsonParseException, JsonMappingException, IOException {
-		
-		titleStr = "\"" + titleStr + "\"" ;				
-		
-		TitleAnalyze analyze = new TitleAnalyze() ;		
-		//1. sentiment 
-		HashMap<String, Object> mapReq = new HashMap<String, Object>() ;
-		mapReq.put("title", titleStr) ;	
-		String response_sentiment = HttpRequest.sendRequest(TypeOfRequest.GetType, kURL_EmotionAnalysis_wei, mapReq) ;
-		System.out.println(response_sentiment) ;
-		List<Object> listEmotion = getReturnDataListWithStr(response_sentiment) ;
-		@SuppressWarnings("unchecked")
-		List<Double> emotionListDouble = (List<Double>) listEmotion.get(0) ;
-		if (emotionListDouble == null) return null ;
-		analyze.setEmotionPositive(emotionListDouble.get(0));
-		analyze.setEmotionNegative(emotionListDouble.get(1));
-		
-		//2. keywords
-		String response_keywords = HttpRequest.sendRequest(TypeOfRequest.GetType, kURL_KeywordsAnalysis_wei, mapReq) ;
-		List<Object> listKeywords = getReturnDataListWithStr(response_keywords) ;
-		if (listKeywords == null) return null ;
-		@SuppressWarnings("unchecked")
-		List<Object> keywordList = (List<Object>) listKeywords.get(0) ;
-		String mainKeyword = (String) keywordList.get(1) ;
-		analyze.setMainKeyword(mainKeyword);
-		analyze.setKeywordList(response_keywords);
-		
-		//3. classify
-		String response_classify = HttpRequest.sendRequest(TypeOfRequest.GetType, kURL_ClassifyAnalysis_wei, mapReq) ;
-		List<Object> listClassify = getReturnDataListWithStr(response_classify) ;
-		if (listClassify == null) return null ;
-		int classify = ((Integer) listClassify.get(0)).intValue() ;
-		analyze.setClassify(classify) ; 
-		
-		//4. suggest
-		
-		
-		
-		return analyze ;
+		String titleStr = getPara("title") ;						
+		AnalyzeHandler handler = new AnalyzeHandler() ;				
+		ResultObj resultObj = handler.analyzeResult(titleStr) ;
+		renderJson(resultObj) ;				
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	//	private .
+	//////////////////////////////////////////////////////////////////////////////////////////
+	// Header in BosonNLP HTTP API
+	private static HashMap<String, Object> getMyHeader() {
+		HashMap<String, Object> myHeader = new HashMap<String, Object>() ;
+		myHeader.put("Content-Type", "application/json") ;
+		myHeader.put("Accept", "application/json") ;
+		myHeader.put("X-Token", kBosonAPI_token) ;		
+		return myHeader;
+	}
 	
 }
-
-
-
-
-
-
-
-
-
