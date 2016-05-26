@@ -14,12 +14,14 @@ public class DingDing {
     private String access_token;
     private String agetid;
     private String touser;
+    private String toparty;
 
     public DingDing(){
         CorpID=PropKit.use("ding_config.txt").get("CorpID");
         CorpSecret=PropKit.use("ding_config.txt").get("CorpSecret");
         agetid=PropKit.use("ding_config.txt").get("agentid");
         touser=PropKit.use("ding_config.txt").get("touser");
+        toparty=PropKit.use("ding_config.txt").get("toparty");
         getAccessToken();
     }
 
@@ -35,7 +37,7 @@ public class DingDing {
 
     public String sendToUser(){
         String url="https://oapi.dingtalk.com/message/send?access_token="+access_token;
-        String params="{\"touser\":\""+touser+"\",\"agentid\":\""+agetid+"\",\"msgtype\":\"text\",\"text\":{\"content\":\""+getData()+"\"}}";
+        String params="{\"touser\":\""+touser+"\",\"toparty\":\""+toparty+"\",\"agentid\":\""+agetid+"\",\"msgtype\":\"text\",\"text\":{\"content\":\""+getData()+"\"}}";
         String result=HttpRequest.sendPost(url,params);
         JsonObject result_json=JsonToMap.parseJson(result);
         if(result_json.get("errcode").getAsInt()==0){
