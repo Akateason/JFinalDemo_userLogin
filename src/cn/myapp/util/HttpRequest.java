@@ -6,10 +6,35 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Map;
 
 public class HttpRequest {
+=======
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.HttpRequestWithBody;
+
+
+public class HttpRequest {
+	
+	/**
+	 * Type Of Request
+	 * @author teason
+	 */
+	public enum TypeOfRequest {
+		GetType ,
+		PostType
+	}
+	
+>>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
     /**
      * 向指定URL发送GET方法的请求
      * 
@@ -86,6 +111,11 @@ public class HttpRequest {
             conn.setRequestProperty("connection", "Keep-Alive");
             conn.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+<<<<<<< HEAD
+=======
+            conn.setRequestProperty("Content-Type","application/json");
+            
+>>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -122,4 +152,93 @@ public class HttpRequest {
         }
         return result;
     }    
+<<<<<<< HEAD
+=======
+    
+   
+    /**
+     * let Map To String
+     * @param map
+     * @return
+     */
+    private static String letMapToString(HashMap<String, Object> map) {
+		String paramString = "" ;
+		for (String key : map.keySet()) {			
+			String value = (String) map.get(key);
+			paramString += "&" + key + "=" + value ;
+		}
+		return paramString ;
+	}
+    
+    /**
+     * send Request
+     * @param type 		TypeOfRequest
+     * @param url		String
+     * @param map		HashMap
+     * @return response .
+     */
+    public static String sendRequest(TypeOfRequest type,String url,HashMap<String, Object> map) {
+    	
+    	String param = letMapToString(map) ;
+
+    	switch (type) {
+		case GetType :
+		{
+	    	return sendGet(url, param) ;
+		}
+		case PostType :
+		{
+			return sendPost(url, param) ;
+		}
+		default :
+			break ;
+		}
+    	
+    	return null ;
+	}
+    
+    /**
+     * doPost -> Unirest
+     * @param url
+     * @param mapHeader
+     * @param fieldMap
+     * @param bodyStr
+     * @return
+     * @throws UnirestException
+     * @throws java.io.IOException 
+     */
+    public static String doPost(String url, HashMap<String, Object> mapHeader, HashMap<String, Object> fieldMap, String bodyStr) throws UnirestException, java.io.IOException {
+    	
+    	HttpRequestWithBody request = Unirest.post(url) ;
+    	
+    	// header
+    	if (mapHeader != null) {
+    		for (String key : mapHeader.keySet()) {		
+    			String value = (String) mapHeader.get(key);
+    			request.header(key, value) ;
+    		}
+		}		
+    	
+		// fields
+    	if (fieldMap != null) {
+    		for (String key : fieldMap.keySet()) {
+    			String value = (String) fieldMap.get(key) ;
+    			request.field(key, value) ;
+    		}			
+		}
+		
+		// body
+    	if (bodyStr != null) {
+    		request.body(bodyStr) ;			
+		}    	
+    	
+    	// HttpResponse
+    	HttpResponse<JsonNode> jsonResponse = request.asJson() ;
+    	String returnString = jsonResponse.getBody().toString() ;         
+//		Unirest.shutdown() ;  // in terminate app .
+
+        return returnString ;
+	}
+    
+>>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 }

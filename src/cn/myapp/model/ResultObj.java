@@ -32,6 +32,13 @@ public class ResultObj {
 		this.returnData = returnData;
 	}
 	
+<<<<<<< HEAD
+=======
+	public ResultObj () {
+		super() ;
+	}
+	
+>>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 	public ResultObj(Object returnData) {
 		super();
 		String returnCode = "1001" ;
