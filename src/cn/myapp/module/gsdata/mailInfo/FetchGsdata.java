@@ -4,10 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-<<<<<<< HEAD
-=======
 import java.util.HashMap;
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -17,12 +14,8 @@ import com.google.gson.JsonObject;
 import cn.myapp.module.gsdata.mailInfo.model.Article;
 import cn.myapp.module.gsdata.mailInfo.model.Nickname;
 import cn.myapp.util.HttpRequest;
-<<<<<<< HEAD
-import cn.myapp.util.JsonToMap;
-=======
 import cn.myapp.util.HttpRequest.TypeOfRequest;
 import cn.myapp.util.json.JsonToMap;
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 
 public class FetchGsdata {
 
@@ -41,27 +34,19 @@ public class FetchGsdata {
 		JsonObject resultMap = JsonToMap.parseJson(resultStr) ;		
 		JsonObject resultData = resultMap.get("returnData").getAsJsonObject() ;
 		JsonArray itemsList = resultData.get("items").getAsJsonArray() ;
-<<<<<<< HEAD
-		JsonElement lastDayInfoElement = itemsList.get((itemsList.size() - 2)) ; // 前天的 .
-=======
 		JsonElement lastDayInfoElement = itemsList.get((itemsList.size() - 1)) ; // 前天的 .
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 		Gson gson = new Gson() ;
 		// GET NICKNAME INFO .
 		Nickname nickname = gson.fromJson(lastDayInfoElement, Nickname.class) ;
 		return nickname ;
 	}
 	
-<<<<<<< HEAD
-	
-=======
 	/**
 	 * fetch DateString
 	 * @param nickname
 	 * @return
 	 * @throws ParseException
 	 */
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 	public String fetchDateString(Nickname nickname) throws ParseException {
 		String dateOrigin = nickname.getResult_day() ;
 		SimpleDateFormat oldFormat = new SimpleDateFormat( "yyyyMMdd" );
@@ -81,15 +66,6 @@ public class FetchGsdata {
 		String returnString = "【前日竞品排名】\n\n" ;	
 		
 		// SETUP .
-<<<<<<< HEAD
-		String spaceName = "spaceName=" + kResultDay ;
-		String jsonStr   = "&jsonStr=" 
-							+ "{\"order\":\"desc\",\"day\":\"" 
-							+ dateString
-							+ "\",\"groupid\":\"38504\",\"sort\":\"wci\"}" ;
-		// REQUEST .
-		String resultStr = HttpRequest.sendGet(kUrlGsdataApi, spaceName + jsonStr) ;
-=======
 		Gson gson = new Gson() ;
 		HashMap<String, Object> jsonMap = new HashMap<String, Object>() ;
 		jsonMap.put("order", "desc");
@@ -105,17 +81,12 @@ public class FetchGsdata {
 
 		// REQUEST .
 		String resultStr = HttpRequest.sendRequest(TypeOfRequest.GetType, kUrlGsdataApi, map) ;
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 		// PARSE .
 		JsonObject resultMap = JsonToMap.parseJson(resultStr) ;		
 		JsonObject resultData = resultMap.get("returnData").getAsJsonObject() ;
 		JsonArray rowsList = resultData.get("rows").getAsJsonArray() ;
-<<<<<<< HEAD
-		Gson gson = new Gson() ;
-=======
 
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
-		ArrayList<Nickname> nicknames = new ArrayList<Nickname>() ; 
+		ArrayList<Nickname> nicknames = new ArrayList<Nickname>() ;
 		for (JsonElement jsonElement : rowsList) {
 			Nickname nick = gson.fromJson(jsonElement, Nickname.class) ;
 			nicknames.add(nick) ;

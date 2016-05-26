@@ -6,12 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
-<<<<<<< HEAD
-import java.util.List;
-import java.util.Map;
-
-public class HttpRequest {
-=======
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +28,6 @@ public class HttpRequest {
 		PostType
 	}
 	
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
     /**
      * 向指定URL发送GET方法的请求
      * 
@@ -111,11 +104,8 @@ public class HttpRequest {
             conn.setRequestProperty("connection", "Keep-Alive");
             conn.setRequestProperty("user-agent",
                     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-<<<<<<< HEAD
-=======
             conn.setRequestProperty("Content-Type","application/json");
             
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -152,9 +142,7 @@ public class HttpRequest {
         }
         return result;
     }    
-<<<<<<< HEAD
-=======
-    
+
    
     /**
      * let Map To String
@@ -240,5 +228,4 @@ public class HttpRequest {
         return returnString ;
 	}
     
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 }

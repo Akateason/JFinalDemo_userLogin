@@ -2,11 +2,7 @@ package cn.myapp.module.gsdata.mailInfo;
 
 import cn.myapp.module.gsdata.mailInfo.model.Nickname;
 import cn.myapp.module.gsdata.mailInfo.model.NicknameTranslate;
-<<<<<<< HEAD
-import cn.myapp.util.UtilSplit;
-=======
 import cn.myapp.util.reflection.UtilReflect;
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 
 
 public class EmailContentDisplay 
@@ -22,14 +18,9 @@ public class EmailContentDisplay
 					+ "最高阅读数 : " + nickname.getReadnum_max() + "\n" 
 					+ "总阅读相对上次的增量(负数即为下降) : " + nickname.getReadnum_all_up() + "\n\n";
 		
-<<<<<<< HEAD
-		UtilSplit utilSplit = new UtilSplit() ;		
-		String[] namelist = utilSplit.getFiledName(nickname) ;
-=======
-		UtilReflect utilSplit = new UtilReflect() ;		
+		UtilReflect utilSplit = new UtilReflect() ;
 		String[] namelist = utilSplit.getFieldName(nickname) ;
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
-		
+
 		for (String name : namelist) 
 		{
 			String val = "" ;

@@ -4,12 +4,6 @@
 package cn.myapp.config;
 
 import cn.myapp.controller.DataNoteController;
-<<<<<<< HEAD
-import cn.myapp.controller.ScoreController;
-import cn.myapp.controller.UserController;
-import cn.myapp.model.User;
-
-=======
 import cn.myapp.controller.DingController;
 import cn.myapp.controller.LanguageAnalysisCtrller;
 import cn.myapp.controller.TitleController;
@@ -18,7 +12,6 @@ import cn.myapp.model.User;
 
 import java.io.IOException;
 
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -27,10 +20,7 @@ import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
-<<<<<<< HEAD
-=======
 import com.mashape.unirest.http.Unirest;
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 
 /**
  * @author teason
@@ -54,13 +44,9 @@ public class MyAppConfig extends JFinalConfig {
 	public void configRoute(Routes me) {		
 		me.add("/user", UserController.class) ;
 		me.add("/note", DataNoteController.class) ;
-<<<<<<< HEAD
-		me.add("/score",ScoreController.class) ;
-=======
 		me.add("/language",LanguageAnalysisCtrller.class) ;
 		me.add("/title",TitleController.class) ;
 		me.add("/ding",DingController.class) ;
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 	}
 	
 	/* (non-Javadoc)
@@ -90,10 +76,7 @@ public class MyAppConfig extends JFinalConfig {
 	 */
 	@Override
 	public void configHandler(Handlers me) {
-<<<<<<< HEAD
 
-=======
-		
 	}
 	
 	@Override
@@ -106,7 +89,6 @@ public class MyAppConfig extends JFinalConfig {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
->>>>>>> 0d19959a9cf59f76a7985cad981a1ad34e2f4290
 	}
 	
 }
