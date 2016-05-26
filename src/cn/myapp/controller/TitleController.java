@@ -1,15 +1,8 @@
 package cn.myapp.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import com.google.gson.Gson;
 import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
 import cn.myapp.model.ResultObj;
 import cn.myapp.module.titleScore.TitleHandler;
-import cn.myapp.module.titleScore.model.Title;
-
 
 public class TitleController extends Controller {
 	
@@ -37,9 +30,6 @@ public class TitleController extends Controller {
 		TitleHandler handler = new TitleHandler() ;
 		ResultObj resultObj = handler.allTitles() ;
 		renderJson(resultObj) ; 
-	}
-	
-	////////////////////////////////////////////////////////////////////////////////////////
-	
+	}	
 
 }

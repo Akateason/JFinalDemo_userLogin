@@ -45,7 +45,7 @@ public class AnalyzeHandler {
 		return title ;
 	}
 	
-
+	
 	private final static String kURL_EmotionAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/sentiment" ;	
 	private final static String kURL_KeywordsAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/keywords" ;
 	private final static String kURL_ClassifyAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/classify" ;

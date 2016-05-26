@@ -4,7 +4,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import cn.myapp.model.DaoObject;
 
-public class TitleAnalyze extends DaoObject{
+public class TitleAnalyze extends DaoObject {
 	
 	private static final long serialVersionUID = 1L;
 		

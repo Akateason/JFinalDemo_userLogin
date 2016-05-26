@@ -32,6 +32,10 @@ public class ResultObj {
 		this.returnData = returnData;
 	}
 	
+	public ResultObj () {
+		super() ;
+	}
+	
 	public ResultObj(Object returnData) {
 		super();
 		String returnCode = "1001" ;
