@@ -79,11 +79,7 @@ public class EmailContentDisplay
 	
 	/**
 	 * 本月文章排名top10
-	 * 
-		jsonStr = "{\"dateend\":\"2016-05-31\",\"sort\":\"desc\",\"start\":0,
-		\"datestart\":\"2016-05-01\",\"sortname\":\"readnum\",
-		\"is_top\":true,\"wx_name\":\"zhepen\"}";
-		spaceName = "wx/opensearchapi/content_list";		
+	 * 		
 	 * @return string
 	 */
 	private final static String kUrlGsdataApi           = "http://wei.subaojiang.com:8080/gsdata/api" ;
@@ -91,12 +87,9 @@ public class EmailContentDisplay
 	
 	public String getCurrentMonthArticleStatement() {
 		
-		// TEST		
-		String dateStart 	= XtDate.getFirstDay() ; // "2016-05-01" ;
-		String dateEnd 		= XtDate.getLastDay() ; // "2016-05-30" ;				
-		
-		System.out.println("date : " + dateStart + "\n" + dateEnd) ;
-		
+		String dateStart 	= XtDate.getFirstDay() ; 
+		String dateEnd 		= XtDate.getLastDay() ; 				
+				
 		String jsonString = "{\"dateend\":\""
 				+ dateEnd
 				+ "\",\"sort\":\"desc\",\"start\":0,\"datestart\":\""
