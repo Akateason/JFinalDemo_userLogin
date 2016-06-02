@@ -9,7 +9,6 @@ import cn.myapp.model.ResultObj;
 import cn.myapp.module.gsdata.mailInfo.EmailContentDisplay;
 import cn.myapp.module.gsdata.mailInfo.FetchGsdata;
 import cn.myapp.module.gsdata.mailInfo.model.Nickname;
-import cn.myapp.util.HttpRequest;
 
 public class DataNoteController extends Controller {
 	
@@ -25,13 +24,13 @@ public class DataNoteController extends Controller {
 		Nickname nickname = fetcher.fetchSubaoNickname() ; 
 		// EMAIL CONTENT .
 		EmailContentDisplay display = new EmailContentDisplay() ;
-		String subaoDetailInfo = display.getEmailContentWillDisplay(nickname) ;
+		String articlesStatement = display.getCurrentMonthArticleStatement() ;
 		
 		// GET SORT INFO
 		String dayString = fetcher.fetchDateString(nickname) ;
 		String articlesInday = fetcher.articlesInDate(dayString) ;
 		String sortInfo = fetcher.fetchSortFromTwoDaysAgo(dayString) ;
-		String emailContentStr = articlesInday + sortInfo + subaoDetailInfo ; // fetch detail .
+		String emailContentStr = articlesInday + sortInfo + articlesStatement ; // fetch detail .
 		
 		if (emailContentStr != null) {					
 			// EMIAL TITLE .
@@ -44,18 +43,6 @@ public class DataNoteController extends Controller {
 			ResultObj resultObj = new ResultObj(map) ;
 			renderJson(resultObj) ;				
 		}					
-	}
-	
-	/**
-	 * 钉钉 链接测试 .
-	 */
-	private final static String kCorpID		 = "dingef5b18dc7fedfada" ;
-	private final static String kCorpSecret	 = "0hUGyiRHz8WHTpsPG72jV6MM26rQzGVAi31E4IUcEIi6NRXBdh52ZZ_i0wqeHcSU" ;
-	
-	public void test() {
-		String response = HttpRequest.sendGet("https://oapi.dingtalk.com/gettoken", 
-				"corpid="+kCorpID+"&corpsecret="+kCorpSecret) ;
-		renderJson(response) ;
 	}
 	
 }
