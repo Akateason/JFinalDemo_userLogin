@@ -57,7 +57,7 @@ public class FetchGsdata {
 	
 	private final static String kResultDay = "wx/wxapi/result_day" ;
 	/**
-	 * 前日 排名
+	 * 前日竞品排名
 	 * fetch Sort From Two Days Ago
 	 * @param String dateString . yyyy-MM-dd
 	 */
@@ -78,14 +78,13 @@ public class FetchGsdata {
 		map.put("spaceName", kResultDay) ;
 		map.put("jsonStr", jsonStr) ;
 
-
 		// REQUEST .
 		String resultStr = HttpRequest.sendRequest(TypeOfRequest.GetType, kUrlGsdataApi, map) ;
 		// PARSE .
 		JsonObject resultMap = JsonToMap.parseJson(resultStr) ;		
 		JsonObject resultData = resultMap.get("returnData").getAsJsonObject() ;
 		JsonArray rowsList = resultData.get("rows").getAsJsonArray() ;
-
+		
 		ArrayList<Nickname> nicknames = new ArrayList<Nickname>() ;
 		for (JsonElement jsonElement : rowsList) {
 			Nickname nick = gson.fromJson(jsonElement, Nickname.class) ;
@@ -95,7 +94,10 @@ public class FetchGsdata {
 		// GET TOP3 .
 		for (int i = 0; i < 3; i++) {
 			Nickname nick = nicknames.get(i) ;
-			String topStr = "TOP" + (i+1) + " : " + nick.getWx_nickname() + " , 最高阅读数 : " + nick.getReadnum_max() + "\n";  
+			String titleName = getTitleFromNicknameInOneDay(dateString, nick.getWx_name()) ;
+			String topStr = "TOP" + (i+1) + " : " + nick.getWx_nickname() + " , 最高阅读数 : " + nick.getReadnum_max() + "\n" 
+							+ titleName + "\n" ;  
+//			System.out.println(topStr);
 			returnString += topStr ;
 		}
 		
@@ -111,6 +113,8 @@ public class FetchGsdata {
 		}
 		
 		returnString += subaoSortInfo + "\n\n" ;
+		
+		System.out.println(returnString);
 		
 		return returnString ;
 	}
@@ -152,6 +156,36 @@ public class FetchGsdata {
 		}
 		
 		return resultStr + "\n" ;
+	}
+	
+	
+	private final static String kSpaceNameTop = "wx/opensearchapi/content_list"; 
+	
+	public String getTitleFromNicknameInOneDay(String postDate, String wx_name) {
+//		System.out.println(postDate + wx_name);
+		
+		String jsonString = "{\"postdate\":\""
+				+ postDate
+				+ "\",\"sort\":\"desc\",\"start\":0,\"sortname\":\"readnum\",\"is_top\":true,\"wx_name\":\""
+				+ wx_name
+				+ "\"}" ;
+		
+		String response = HttpRequest.sendGet(kUrlGsdataApi, "spaceName=" + kSpaceNameTop + "&jsonStr=" + jsonString) ;
+//		System.out.println(response);
+		
+		// PARSE .
+		Gson gson = new Gson() ;
+		JsonObject resultMap = JsonToMap.parseJson(response) ;		
+		JsonObject resultData = resultMap.get("returnData").getAsJsonObject() ;
+		JsonArray itemsList = resultData.get("items").getAsJsonArray() ;		
+		
+		if (itemsList.size() == 0) return "" ;		
+		
+		// GET ARTICLES STR .
+		JsonElement jsonElement = itemsList.get(0) ;
+		Article article = gson.fromJson(jsonElement, Article.class) ;
+		
+		return article.getTitle() ;				
 	}
 	
 }

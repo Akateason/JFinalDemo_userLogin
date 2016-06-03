@@ -13,7 +13,6 @@ import cn.myapp.util.XtDate;
 import cn.myapp.util.json.JsonToMap;
 import cn.myapp.util.reflection.UtilReflect;
 
-
 public class EmailContentDisplay 
 {
 	/**
@@ -88,7 +87,7 @@ public class EmailContentDisplay
 	public String getCurrentMonthArticleStatement() {
 		
 		String dateStart 	= XtDate.getFirstDay() ; 
-		String dateEnd 		= XtDate.getLastDay() ; 				
+		String dateEnd 		= XtDate.getLastDay()  ;
 				
 		String jsonString = "{\"dateend\":\""
 				+ dateEnd
@@ -121,4 +120,6 @@ public class EmailContentDisplay
 		
 		return strArticleStatement ;
 	}
+	
+	
 }
