@@ -47,7 +47,7 @@ public class DingDing {
         }
     }
 
-    private final static String kURL_fetchGroupSendInfo = "http://localhost:8080/GsdataApp/note/fetchGroupSendInfo" ;
+    private final static String kURL_fetchGroupSendInfo = "http://localhost/GsdataApp/note/fetchGroupSendInfo" ;
     
     private String getData(){
         String result=HttpRequest.sendGet(kURL_fetchGroupSendInfo,"") ;

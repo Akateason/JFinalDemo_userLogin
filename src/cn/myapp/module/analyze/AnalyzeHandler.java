@@ -19,7 +19,7 @@ import cn.myapp.util.HttpRequest.TypeOfRequest;
 
 public class AnalyzeHandler {
 
-	private final static String kURL_titleInsert = "http://localhost:8080/GsdataApp/title/insert" ;
+	private final static String kURL_titleInsert = "http://localhost/GsdataApp/title/insert" ;
 	
 	/**
 	 * request to titleCtrller/title/insert
@@ -46,10 +46,10 @@ public class AnalyzeHandler {
 	}
 	
 	
-	private final static String kURL_EmotionAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/sentiment" ;	
-	private final static String kURL_KeywordsAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/keywords" ;
-	private final static String kURL_ClassifyAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/classify" ;
-	private final static String kURL_SuggestAnalysis_wei 	= "http://localhost:8080/GsdataApp/language/suggest" ;
+	private final static String kURL_EmotionAnalysis_wei 	= "http://localhost/GsdataApp/language/sentiment" ;	
+	private final static String kURL_KeywordsAnalysis_wei 	= "http://localhost/GsdataApp/language/keywords" ;
+	private final static String kURL_ClassifyAnalysis_wei 	= "http://localhost/GsdataApp/language/classify" ;
+	private final static String kURL_SuggestAnalysis_wei 	= "http://localhost/GsdataApp/language/suggest" ;
 	
 	/**
 	 * get complete Analyze From Request

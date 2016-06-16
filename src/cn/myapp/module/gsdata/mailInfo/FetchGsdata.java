@@ -19,7 +19,7 @@ import cn.myapp.util.json.JsonToMap;
 
 public class FetchGsdata {
 
-	private final static String kUrlGsdataApi	= "http://114.55.74.220:8080/gsdata/api" ; 
+	private final static String kUrlGsdataApi	= "http://114.55.74.220/gsdata/api" ; 
 	private final static String kSName7Days	  	= "wx/opensearchapi/nickname_order_list" ;
 	private final static String kParamJsonStr 	= "{\"wx_nickname\":\"日本流行每日速报\",\"num\":7,\"sort\":\"asc\"}" ;
 	

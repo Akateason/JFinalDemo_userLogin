@@ -81,7 +81,7 @@ public class EmailContentDisplay
 	 * 		
 	 * @return string
 	 */
-	private final static String kUrlGsdataApi           = "http://wei.subaojiang.com:8080/gsdata/api" ;
+	private final static String kUrlGsdataApi           = "http://wei.subaojiang.com/gsdata/api" ;
 	private final static String kSpaceNameTop			= "wx/opensearchapi/content_list"; 
 	
 	public String getCurrentMonthArticleStatement() {
